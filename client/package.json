@@ -1,6 +1,6 @@
 {
   "name": "@9now/client",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "",
   "main": "src/index",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": "luke kaalim",
   "license": "MIT",
   "dependencies": {
-    "@9now/models": "^0.2.0"
+    "@9now/models": "^0.3.0"
   },
   "devDependencies": {
     "@lukekaalim/contract": "^2.0.0",

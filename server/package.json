@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@9now/models": "^0.2.0",
+    "@9now/models": "^0.3.0",
     "@lukekaalim/server": "^4.1.0"
   },
   "devDependencies": {}

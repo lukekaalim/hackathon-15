@@ -24,6 +24,7 @@ export type Carousel = {
 };
 
 export type Card = {
+  cardId: string,
   imageURL: string,
   route: Route,
   title: string,
@@ -31,11 +32,13 @@ export type Card = {
 };
 
 export type Rail = {
+  railId: string,
   callToAction: CallToAction | null,
   cards: Array<Card>,
 };
 
 export type Homepage = {
+  homepageId: string,
   carousel: Carousel,
   rails: Array<Rail>
 };
@@ -58,6 +61,7 @@ const carouselModel/*: Model<Carousel>*/ = nameModel('9Now/Carousel', modelObjec
 }));
 
 const cardModel/*: Model<Card>*/ = nameModel('9Now/Card', modelObject({
+  cardId: stringModel,
   imageURL: stringModel,
   route: routeModel,
   title: stringModel,
@@ -65,11 +69,13 @@ const cardModel/*: Model<Card>*/ = nameModel('9Now/Card', modelObject({
 }))
 
 const railModel/*: Model<Rail>*/ = nameModel('9Now/Rail', modelObject({
+  railId: stringModel,
   callToAction: modelOptional(callToActionModel),
   cards: modelArray(cardModel),
 }));
 
 const homepageModel/*: Model<Homepage>*/ = nameModel('9Now/Homepage', modelObject({
+  homepageId: stringModel,
   carousel: carouselModel,
   rails: modelArray(railModel),
 }));
