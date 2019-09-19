@@ -30,8 +30,9 @@ export type Card = {
   subtitle: string,
 };
 
+export type CardRailID = string;
 export type CardRail = {
-  id: string,
+  id: CardRailID,
   type: 'card-rail',
   cards: Array<Card>,
   callToAction: CallToAction | null,
@@ -43,8 +44,9 @@ export type Poster = {
   imageURL: string,
 }
 
+export type PosterRailID = string;
 export type PosterRail = {
-  id: string,
+  id: PosterRailID,
   type: 'poster-rail',
   posters: Array<Poster>,
   callToAction: CallToAction | null,
@@ -57,9 +59,9 @@ export type LiveEvent = {
   startTime: number,
   endTime: number,
 }
-
+export type LiveEventRailID = string;
 export type LiveEventRail = {
-  id: string,
+  id: LiveEventRailID,
   type: 'live-event-rail',
   events: Array<LiveEvent>,
   callToAction: CallToAction | null,
