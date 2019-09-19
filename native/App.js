@@ -33,7 +33,7 @@ const primitives = {
   },
 };
 
-const { Card, Rail } = createNineNowComponents(primitives);
+const { Card, CardRail } = createNineNowComponents(primitives);
 
 const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromFetch(fetch, Headers))
 
@@ -51,12 +51,16 @@ export default function App() {
   }, []);
 
   if (fontLoaded && homepageData) {
-    console.log(fontLoaded)
     return (
       <View style={styles.container}>
-        {homepageData.rails.map(rail => (
-          <Rail key={JSON.stringify(rail.cards)} callToAction={rail.callToAction} cards={rail.cards} />
-        ))}
+        {homepageData.rails.map(rail => {
+          switch (rail.type) {
+            case 'card-rail':
+              <CardRail key={rail.id} callToAction={rail.callToAction} cards={rail.cards} />
+            default:
+              <Text>UnsupportedRail</Text>
+          }
+        })}
       </View>
     );
   }
