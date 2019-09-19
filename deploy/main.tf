@@ -96,6 +96,36 @@ resource "aws_iam_role_policy_attachment" "ecr-policy-attach" {
   policy_arn = "${data.aws_iam_policy.ecr-readonly-policy.arn}"
 }
 
+resource "aws_s3_bucket" "hack-server-data" {
+  bucket_prefix = "hack-server-data"
+}
+
+resource "aws_s3_bucket_policy" "hack-server-data_policy" {
+  bucket = "${aws_s3_bucket.hack-server-data.id}"
+  policy = <<POLICY
+{
+  "Id": "Policy1568920927773",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1568920924470",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::${aws_s3_bucket.hack-server-data.bucket}/*",
+      "Principal": {
+        "AWS": [
+          "${data.aws_iam_role.aws-elasticbeanstalk-ec2-role.arn}"
+        ]
+      }
+    }
+  ]
+}
+  POLICY
+}
+
 resource "aws_elastic_beanstalk_environment" "hack-server-env" {
   name                = "hack-server"
   version_label       = "${aws-uncontrolled_elastic_beanstalk_application_version.current-version.application_version_label}"
@@ -106,6 +136,11 @@ resource "aws_elastic_beanstalk_environment" "hack-server-env" {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
     value     = "${aws_iam_role_policy_attachment.ecr-policy-attach.role}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "HACK_SERVER_BUCKET_NAME"
+    value     = "${aws_s3_bucket.hack-server-data.bucket}"
   }
 }
 
