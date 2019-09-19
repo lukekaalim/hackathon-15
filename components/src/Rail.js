@@ -6,14 +6,17 @@ import React from 'react';
 const middleCardStyle = {
   'margin-left': 4,
   'margin-right': 4,
+  'flex-direction': 'column',
 };
 const firstCardStyle = {
   'margin-left': 0,
   'margin-right': 4,
+  'flex-direction': 'column',
 };
 const lastCardStyle = {
   'margin-left': 4,
   'margin-right': 0,
+  'flex-direction': 'column',
 };
 const cardTitleStyle = {
   'color': 'white',
@@ -80,6 +83,10 @@ const railCardContainerStyle = {
   'flex-direction': 'row',
 }
 
+const railStyle = {
+  'flex-direction': 'column',
+}
+
 type RailProps = {
   callToAction: CallToAction | null,
   cards: Array<CardData>,
@@ -87,11 +94,12 @@ type RailProps = {
 
 const createRail = ({ Box, Text, Image }, Card) => ({ cards }/*: RailProps*/) => {
   return (
-    <Box>
+    <Box style={railStyle}>
       <Text style={railTitleStyle} text="Recently Added" />
       <Box style={railCardContainerStyle}>
         {cards.map(card => (
           <Card
+            key={card.cardId}
             subtitle={card.subtitle}
             title={card.title}
             imageURL={card.imageURL}
