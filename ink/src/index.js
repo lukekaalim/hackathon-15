@@ -21,19 +21,23 @@ const primitives = {
 	},
 };
 
-const { Card, Rail } = createNineNowComponents(primitives);
+const { Card, CardRail } = createNineNowComponents(primitives);
 
 const InkNow = () => {
 	const [rails, setRails] = useState();
 	const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromNodeHttpsRequest(request));
 	useEffect(() => {
-		//client.getHomepage().then(rails => setRails(rails)).catch(console.error);
+		client.getHomepage().then(({ rails }) => setRails(rails)).catch(console.error);
 	}, [])
-	const card1 = { cardId:'123', imageURL: 'www.google.com', route: { type: 'home' }, title: 'hey', subtitle: 'wow' };
-	const card2 = { cardId:'1243', imageURL: 'www.google.com', route: { type: 'home' }, title: 'hey', subtitle: 'wow' };
-	const card3 = { cardId:'1253', imageURL: 'www.google.com', route: { type: 'home' }, title: 'hey', subtitle: 'wow' };
-	const card5 = { cardId:'1623', imageURL: 'www.google.com', route: { type: 'home' }, title: 'hey', subtitle: 'wow' };
-	return <Rail callToAction={null} cards={[card1, card2, card3, card5]} />
+	if (!rails) {
+		return 'Loading';
+	}
+	if (rails.length < 1) {
+		return 'No Content';
+	}
+	if (rails[0].type !== 'card-rail')
+		return 'Unsupported Rail';
+	return <CardRail callToAction={rails[0].callToAction} cards={rails[0].cards} />
 };
 
 render(React.createElement(InkNow));
