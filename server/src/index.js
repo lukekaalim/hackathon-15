@@ -34,10 +34,10 @@ const main = async (
 
 const bucketName = process.env['HACK_SERVER_BUCKET_NAME'];
 const region = 'ap-southeast-2';
-const accessKeyId = process.env['AWS_ACCESS_KEY_ID'];
-const secretAccessKey = process.env['AWS_SECRET_ACCESS_KEY'];
+const accessKeyId = process.env['AWS_ACCESS_KEY_ID'] || '';
+const secretAccessKey = process.env['AWS_SECRET_ACCESS_KEY'] || '';
 
-if (bucketName && region && accessKeyId && secretAccessKey) {
+if (bucketName) {
   main(bucketName, region, accessKeyId, secretAccessKey);
 } else {
   throw new Error('Missing either HACK_SERVER_BUCKET_NAME, AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY');
