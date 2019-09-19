@@ -1,5 +1,5 @@
 // @flow strict
-import type { CallToAction, Route, Card as CardData } from '@9now/models';
+import type { CallToAction, Card as CardData } from '@9now/models';
 import type { Primitives } from './primitives';
 import React from 'react';
 
@@ -52,7 +52,6 @@ const getCardStyle = position => {
 
 type CardProps = {
   imageURL: string,
-  route: Route,
   position?: 'first' | 'middle' | 'last',
   title: string,
   subtitle: string,
@@ -92,18 +91,18 @@ type RailProps = {
   cards: Array<CardData>,
 };
 
-const createRail = ({ Box, Text, Image }, Card) => ({ cards }/*: RailProps*/) => {
+const createCardRail = ({ Box, Text, Image }, Card) => ({ cards }/*: RailProps*/) => {
   return (
     <Box style={railStyle}>
       <Text style={railTitleStyle} text="Recently Added" />
       <Box style={railCardContainerStyle}>
-        {cards.map(card => (
+        {cards.map((card, index) => (
           <Card
-            key={card.cardId}
+            key={card.id}
             subtitle={card.subtitle}
             title={card.title}
             imageURL={card.imageURL}
-            route={card.route}
+            position={index === 0 ? 'first' : index === cards.length - 1 ? 'last' : 'middle'}
           />
         ))}
       </Box>
@@ -113,6 +112,6 @@ const createRail = ({ Box, Text, Image }, Card) => ({ cards }/*: RailProps*/) =>
 
 export const createRailComponents = (primitives: Primitives) => {
   const Card = createCard(primitives);
-  const Rail = createRail(primitives, Card);
-  return { Card, Rail };
+  const CardRail = createCardRail(primitives, Card);
+  return { Card, CardRail };
 };
