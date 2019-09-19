@@ -47,7 +47,6 @@ export default function App() {
       .then(homepage => setHomePageData(homepage))
       .catch(error => console.error(error));
   }, []);
-  console.log('RUNNGIN');
   useEffect(() => {
     Font.loadAsync({ hurme: require('./assets/fonts/Hurme.otf') }).then(() => setFontLoaded(true))
   }, []);
@@ -58,7 +57,7 @@ export default function App() {
         {homepageData.rails.map(rail => {
           switch (rail.type) {
             case 'card-rail':
-              return <CardRail key={rail.id} callToAction={rail.callToAction} cards={rail.cards} />
+              return <CardRail key={rail.id} {...rail} />
             default:
               return <Text>UnsupportedRail</Text>
           }
