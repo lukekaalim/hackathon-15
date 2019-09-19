@@ -3,7 +3,7 @@ terraform {
     organization = "luke"
 
     workspaces {
-      name = "atlas"
+      name = "hackathon-15"
     }
   }
 }
