@@ -25,7 +25,8 @@ const main = async () => {
   const routes = [homepageRoute];
   const listener = createListener(routes, () => notFound());
   const server = createServer(listener);
-  server.listen(1243);
+  server.listen(1243, () => console.log(`Listening on http://localhost:${server.address().port}`));
+  process.on('SIGINT', () => console.log('Starting Shut Down') || server.close(() => console.log('Shut Down')))
 };
 
 main();
