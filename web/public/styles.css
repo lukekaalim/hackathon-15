@@ -1,0 +1,69 @@
+@font-face {
+  font-family: Hurme;
+  src: url("fonts/Hurme Geometric Sans No.3/HurmeGeometricSans3.otf") format("opentype");
+}
+
+body {
+  background-color: rgb(17, 22, 25)
+}
+
+.rail-title {
+  color: white;
+  font-family: Hurme;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.5em;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.rail-call-to-action {
+  background-color: black;
+  font-family: Hurme;
+}
+
+.rail-card-container {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.rail-card {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.rail-card-title {
+  color: white;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-family: Hurme;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+.rail-card-subtitle {
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Hurme;
+  margin: 0;
+  color: #9da2a5;
+}
+
+.rail-card:first-child {
+  margin-left: 0px;
+}
+.rail-card:last-child {
+  margin-right: 0px;
+}
+
+.rail-card-image {
+  width: 320px;
+  height: 180px;
+}
+
+.homepage {
+  padding-left: 64px;
+  padding-right: 64px;
+}

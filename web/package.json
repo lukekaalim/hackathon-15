@@ -1,0 +1,29 @@
+{
+  "name": "@9now/web",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@9now/models": "^0.2.0",
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "rollup": "^1.21.4",
+    "rollup-plugin-alias": "^2.0.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  },
+  "dependencies": {
+    "@9now/client": "^0.3.0",
+    "@9now/components": "^0.5.1",
+    "@lukekaalim/http-client": "^1.2.0",
+    "preact": "^10.0.0-rc.3"
+  }
+}

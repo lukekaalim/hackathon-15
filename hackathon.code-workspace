@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "models"
+		},
+		{
+			"path": "client"
+		},
+		{
+			"path": "web"
+		},
+		{
+			"path": "server"
+		},
+		{
+			"path": "links"
+		},
+		{
+			"path": "components"
+		},
+		{
+			"path": "native"
+		}
+	],
+	"settings": {}
+}
