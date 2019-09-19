@@ -8,4 +8,4 @@ const primitives = {
   Image: props => <img style={props.style} src={props.source}></img>,
 };
 
-export const { Card, Rail } = createNineNowComponents(primitives);
+export const { Card, CardRail } = createNineNowComponents(primitives);

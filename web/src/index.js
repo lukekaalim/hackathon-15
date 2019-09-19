@@ -4,7 +4,7 @@ import { createClient } from '@9now/client';
 import { render, Fragment, h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 
-import { Rail } from './components/NineNow';
+import { CardRail } from './components/NineNow';
 import { Homepage } from './components/Homepage';
 
 const NineNowWeb = () => {
@@ -21,7 +21,9 @@ const NineNowWeb = () => {
     return (
       <Homepage>
         {rails.map(rail => {
-          return <Rail cards={rail.cards} callToAction={rail.callToAction} />
+          if (rail.type !== 'card-rail')
+            return 'Unsupported Rail';
+          return <CardRail {...rail} />
         })}
       </Homepage>
     )

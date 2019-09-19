@@ -1,5 +1,4 @@
 // @flow strict
-import type { CallToAction, Route } from '@9now/models';
 import { h, Fragment } from 'preact';
 
 type HomepageProps = {
