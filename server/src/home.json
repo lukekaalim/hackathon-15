@@ -1,0 +1,12 @@
+{
+  "carousel": { "slides": [] },
+  "rails": [
+    {
+      "callToAction": { "title": "More Shows", "route": { "type": "home" } },
+      "cards": [
+        { "subtitle": "The Blind Sands", "title": "Dungeons and Dragons", "imageURL": "http://10.0.43.52:5000/images/1d9-card.png", "route": { "type": "home" } },
+        { "subtitle": "The Full Stack", "title": "Sandwich Club","imageURL": "http://10.0.43.52:5000/images/sandwich-card.png", "route": { "type": "home" } }
+      ]
+    }
+  ]
+}
