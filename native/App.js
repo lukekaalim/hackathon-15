@@ -13,7 +13,9 @@ const primitives = {
     const nativeStyle = {
       fontFamily: 'hurme',
       fontSize: style['font-size'],
-      color: style['color']
+      color: style['color'],
+      marginTop: style['margin-top'],
+      marginBottom: style['margin-bottom'],
     };
     return <Text style={nativeStyle}>{text}</Text>
   },
@@ -56,9 +58,9 @@ export default function App() {
         {homepageData.rails.map(rail => {
           switch (rail.type) {
             case 'card-rail':
-              <CardRail key={rail.id} callToAction={rail.callToAction} cards={rail.cards} />
+              return <CardRail key={rail.id} callToAction={rail.callToAction} cards={rail.cards} />
             default:
-              <Text>UnsupportedRail</Text>
+              return <Text>UnsupportedRail</Text>
           }
         })}
       </View>
