@@ -1,5 +1,5 @@
 // @flow strict
-import type { CallToAction, Card as CardData } from '@9now/models';
+import type { CallToAction, Card as CardData, CardRail as CardRailData } from '@9now/models';
 import type { Primitives } from './primitives';
 import React from 'react';
 
@@ -50,11 +50,8 @@ const getCardStyle = position => {
   }
 };
 
-type CardProps = {
-  imageURL: string,
+type CardProps = CardData & {
   position?: 'first' | 'middle' | 'last',
-  title: string,
-  subtitle: string,
 };
 
 const createCard = ({ Box, Text, Image }) => ({ imageURL, title, subtitle, position = 'middle' }: CardProps) => {
@@ -62,8 +59,8 @@ const createCard = ({ Box, Text, Image }) => ({ imageURL, title, subtitle, posit
   return (
     <Box style={cardStyle}>
       <Image style={cardImageStyle} source={imageURL} />
-      <Text style={cardTitleStyle} text="The Block"/>
-      <Text style={cartSubtitleStyle} text="Episode 28"/>
+      <Text style={cardTitleStyle} text={title}/>
+      <Text style={cartSubtitleStyle} text={subtitle}/>
     </Box>
   );
 };
@@ -86,19 +83,15 @@ const railStyle = {
   'flex-direction': 'column',
 }
 
-type RailProps = {
-  callToAction: CallToAction | null,
-  cards: Array<CardData>,
-};
-
-const createCardRail = ({ Box, Text, Image }, Card) => ({ cards }/*: RailProps*/) => {
+const createCardRail = ({ Box, Text, Image }, Card) => ({ title, cards }/*: CardRailData*/) => {
   return (
     <Box style={railStyle}>
-      <Text style={railTitleStyle} text="Recently Added" />
+      <Text style={railTitleStyle} text={title} />
       <Box style={railCardContainerStyle}>
         {cards.map((card, index) => (
           <Card
             key={card.id}
+            id={card.id}
             subtitle={card.subtitle}
             title={card.title}
             imageURL={card.imageURL}
