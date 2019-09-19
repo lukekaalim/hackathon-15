@@ -36,6 +36,7 @@ export type CardRail = {
   type: 'card-rail',
   cards: Array<Card>,
   callToAction: CallToAction | null,
+  title: string,
 }
 
 export type PosterID = string;
@@ -50,6 +51,7 @@ export type PosterRail = {
   type: 'poster-rail',
   posters: Array<Poster>,
   callToAction: CallToAction | null,
+  title: string,
 }
 
 export type LiveEventID = string;
@@ -65,6 +67,7 @@ export type LiveEventRail = {
   type: 'live-event-rail',
   events: Array<LiveEvent>,
   callToAction: CallToAction | null,
+  title: string,
 }
 
 export type Rail = CardRail | PosterRail | LiveEventRail;
@@ -80,6 +83,7 @@ const cardRailModel/*: Model<CardRail>*/ = modelObject({
   type: modelLiteral('card-rail'),
   cards: modelArray(cardModel),
   callToAction: modelOptional(modelCallToAction),
+  title: stringModel,
 })
 
 const posterModel/*: Model<Poster>*/ = modelObject({
@@ -91,6 +95,7 @@ const posterRailModel/*: Model<PosterRail>*/ = modelObject({
   type: modelLiteral('poster-rail'),
   posters: modelArray(posterModel),
   callToAction: modelOptional(modelCallToAction),
+  title: stringModel,
 })
 
 const liveEventModel/*: Model<LiveEvent>*/ = modelObject({
@@ -104,6 +109,7 @@ const liveEventRailModel/*: Model<LiveEventRail>*/ = modelObject({
   type: modelLiteral('live-event-rail'),
   events: modelArray(liveEventModel),
   callToAction: modelOptional(modelCallToAction),
+  title: stringModel,
 });
 
 const railModel/*: Model<Rail>*/ = modelDisjointUnion('type', {
