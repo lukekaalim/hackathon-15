@@ -12,10 +12,8 @@ const corsHeaders = {
 const main = async (
   bucketName/*: string*/,
   region/*: string*/,
-  accessKeyId/*: string*/,
-  secretAccessKey/*: string*/,
 ) => {
-  const railService = createRailService(bucketName, region, accessKeyId, secretAccessKey);
+  const railService = createRailService(bucketName, region);
   const homepageRoute = createRoute('/home', 'GET', async () => {
     try {
       const rails = await railService.getHomepageRails();
@@ -34,11 +32,9 @@ const main = async (
 
 const bucketName = process.env['HACK_SERVER_BUCKET_NAME'];
 const region = 'ap-southeast-2';
-const accessKeyId = process.env['AWS_ACCESS_KEY_ID'] || '';
-const secretAccessKey = process.env['AWS_SECRET_ACCESS_KEY'] || '';
 
 if (bucketName) {
-  main(bucketName, region, accessKeyId, secretAccessKey);
+  main(bucketName, region);
 } else {
   throw new Error('Missing either HACK_SERVER_BUCKET_NAME, AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY');
 }

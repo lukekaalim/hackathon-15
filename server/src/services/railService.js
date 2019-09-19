@@ -5,11 +5,7 @@ import type { Model } from '@lukekaalim/model';
 */
 const { modelArray, stringModel, modelObject, modelDisjointUnion, modelLiteral, modelTagUnion } = require('@lukekaalim/model')
 const { cardRailModel, posterRailModel, liveEventRailModel } = require('@9now/models');
-const { S3Client } = require('@aws-sdk/client-s3-node');
-const { PutObjectCommand } = require('@aws-sdk/client-s3-node/commands/PutObjectCommand');
-const { GetObjectCommand } = require('@aws-sdk/client-s3-node/commands/GetObjectCommand');
-const { DeleteObjectCommand } = require('@aws-sdk/client-s3-node/commands/DeleteObjectCommand');
-const { ListObjectsCommand } = require('@aws-sdk/client-s3-node/commands/ListObjectsCommand');
+const AWS = require('aws-sdk');
 
 /*::
 export type RailService = {
@@ -33,16 +29,15 @@ const homepageRailRefsModel/*: Model<Array<HomepageRailRef>>*/ = modelArray(mode
 const createRailService = (
   bucketName/*: string*/,
   region/*: string*/,
-  accessKeyId/*: string*/,
-  secretAccessKey/*: string*/,
 )/*: RailService*/ => {
-  const client = new S3Client({ region, accessKeyId, secretAccessKey });
+  const client = new AWS.S3({ region });
 
   const getRail = async /*:: <T>*/(model/*: Model<T>*/, type, id)/*: Promise<T>*/ => {
-    const { Body } = await client.send(new GetObjectCommand({
+    console.log(`Getting rails/${type}/${id}.json`);
+    const { Body } = await client.getObject({
       Bucket: bucketName,
-      Key: `/rails/${type}/${id}.json`,
-    }));
+      Key: `rails/${type}/${id}.json`
+    }).promise();
     const cardRailResult = model.from(JSON.parse(Body.toString('utf-8')));
     if (cardRailResult.type === 'failure') throw new Error('Something went wrong!');
     return cardRailResult.success;
@@ -53,10 +48,11 @@ const createRailService = (
   const getLiveEventRail = id => getRail(liveEventRailModel, 'liveEvent', id);
 
   const getHomepageRails = async () => {
-    const { Body } = await client.send(new GetObjectCommand({
+    console.log('Getting homepageRails.json');
+    const { Body } = await client.getObject({
       Bucket: bucketName,
-      Key: '/homepageRails.json',
-    }));
+      Key: 'homepageRails.json',
+    }).promise();
     const railRefsResult = homepageRailRefsModel.from(JSON.parse(Body.toString('utf-8')));
     if (railRefsResult.type === 'failure') throw new Error('Something went wrong!');
     const railRefs = railRefsResult.success;
