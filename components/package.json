@@ -1,6 +1,6 @@
 {
   "name": "@9now/components",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "",
   "main": "dist/components.cjs.js",
   "module": "dist/components.esm.js",

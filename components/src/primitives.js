@@ -26,9 +26,9 @@ type TextProps = {
 
 type ImageProps = {
   source: string,
-  style?: {
-    width?: number,
-    height?: number,
+  style: {
+    width: number,
+    height: number,
   }
 }
 
