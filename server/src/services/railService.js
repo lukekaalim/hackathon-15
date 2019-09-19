@@ -10,19 +10,19 @@ const AWS = require('aws-sdk');
 /*::
 export type RailService = {
   getHomepageRails: () => Promise<Array<Rail>>,
-  //setHomepageRails: (rails: Array<Rail>) => Promise<Array<Rail>>,
+  setHomepageRails: (rails: Array<Rail>) => Promise<void>,
   getCardRail: (id: CardRailID) => Promise<CardRail>,
   getPosterRail: (id: PosterRailID) => Promise<PosterRail>,
   getLiveEventRail: (id: LiveEventRailID) => Promise<LiveEventRail>,
   // Only allow editing to the card rail for hackathon purposes
-  //setCardRail: (id: CardRailID, CardRail) => Promise<CardRail>,
+  setCardRail: (cardRail: CardRail) => Promise<void>,
 };
 */
 /*::
-type HomepageRailRef = { type: 'poster' | 'card' | 'liveEvent', id: string };
+type HomepageRailRef = { type: 'poster-rail' | 'card-rail' | 'live-event-rail', id: string };
 */
 const homepageRailRefsModel/*: Model<Array<HomepageRailRef>>*/ = modelArray(modelObject({
-  type: modelTagUnion(['poster', 'card', 'liveEvent']),
+  type: modelTagUnion(['poster-rail', 'card-rail', 'live-event-rail']),
   id: stringModel
 }));
 
@@ -33,7 +33,6 @@ const createRailService = (
   const client = new AWS.S3({ region });
 
   const getRail = async /*:: <T>*/(model/*: Model<T>*/, type, id)/*: Promise<T>*/ => {
-    console.log(`Getting rails/${type}/${id}.json`);
     const { Body } = await client.getObject({
       Bucket: bucketName,
       Key: `rails/${type}/${id}.json`
@@ -42,13 +41,30 @@ const createRailService = (
     if (cardRailResult.type === 'failure') throw new Error('Something went wrong!');
     return cardRailResult.success;
   };
+  const setRail = async (type, rail) => {
+    await client.putObject({
+      Bucket: bucketName,
+      Key: `rails/${type}/${rail.id}.json`,
+      Body: JSON.stringify(rail),
+    }).promise();
+  };
 
-  const getCardRail = id => getRail(cardRailModel, 'poster', id);
-  const getPosterRail = id => getRail(posterRailModel, 'card', id);
-  const getLiveEventRail = id => getRail(liveEventRailModel, 'liveEvent', id);
+  const getCardRail = id => getRail(cardRailModel, 'card-rail', id);
+  const getPosterRail = id => getRail(posterRailModel, 'poster-rail', id);
+  const getLiveEventRail = id => getRail(liveEventRailModel, 'live-event-rail', id);
+
+  const setCardRail = (rail/*: CardRail*/) => setRail('card-rail', rail);
+
+  const setHomepageRails = async (rails) => {
+    const railRefs = rails.map(rail => ({ type: rail.type, id: rail.id }));
+    await client.putObject({
+      Bucket: bucketName,
+      Key: `homepageRails.json`,
+      Body: JSON.stringify(railRefs),
+    }).promise();
+  };
 
   const getHomepageRails = async () => {
-    console.log('Getting homepageRails.json');
     const { Body } = await client.getObject({
       Bucket: bucketName,
       Key: 'homepageRails.json',
@@ -58,11 +74,11 @@ const createRailService = (
     const railRefs = railRefsResult.success;
     const rails = await Promise.all(railRefs.map/*:: <Promise<Rail>>*/(railRef => {
       switch (railRef.type) {
-        case 'poster':
+        case 'poster-rail':
           return getPosterRail(railRef.id);
-        case 'card':
+        case 'card-rail':
           return getCardRail(railRef.id);
-        case 'liveEvent':
+        case 'live-event-rail':
           return getLiveEventRail(railRef.id);
         default:
           return (railRef.type/*: empty*/);
@@ -73,9 +89,11 @@ const createRailService = (
 
   return {
     getHomepageRails,
+    setHomepageRails,
     getCardRail,
     getPosterRail,
     getLiveEventRail,
+    setCardRail,
   };
 };
 

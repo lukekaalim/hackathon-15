@@ -1,13 +1,19 @@
 // @flow init
-const { createListener, createRoute, ok, notFound, internalServerError } = require('@lukekaalim/server');
+const { createListener, createRoute, ok, notFound, internalServerError, badRequest } = require('@lukekaalim/server');
 const { createServer } = require('http');
 const { readFile } = require('fs').promises;
 const { join } = require('path');
+const { modelArray, modelObject } = require('@lukekaalim/model')
 const { createRailService } = require('./services/railService');
+const { cardRailModel, railModel } = require('@9now/models');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*'
 };
+
+const homepageUpdateModel = modelObject({
+  rails: modelArray(railModel)
+});
 
 const main = async (
   bucketName/*: string*/,
@@ -23,7 +29,36 @@ const main = async (
       return internalServerError(JSON.stringify(err.stack), corsHeaders);
     }
   });
-  const routes = [homepageRoute];
+  const updateHomepageRoute = createRoute('/home', 'POST', async ({ body }) => {
+    try {
+      if (!body)
+        return badRequest(JSON.stringify({ message: 'missing body!' }));
+      const updatedHomepageResult = homepageUpdateModel.from(JSON.parse(body));
+      if (updatedHomepageResult.type === 'failure')
+        return badRequest(JSON.stringify(updatedHomepageResult));
+      await railService.setHomepageRails(updatedHomepageResult.success.rails);
+      return ok(JSON.stringify({ message: 'updated' }), corsHeaders)
+    } catch (err) {
+      console.error(err);
+      return internalServerError(JSON.stringify(err.stack), corsHeaders);
+    }
+  });
+  const addCardRail = createRoute('/cardRail', 'POST', async ({ body }) => {
+    try {
+      if (!body) {
+        return badRequest(JSON.stringify({ message: 'missing body!' }));
+      }
+      const cardRailResult = cardRailModel.from(JSON.parse(body));
+      if (cardRailResult.type === 'failure')
+        return badRequest(JSON.stringify(cardRailResult));
+      await railService.setCardRail(cardRailResult.success)
+      return ok(JSON.stringify({ message: 'uploaded' }), corsHeaders)
+    } catch (err) {
+      console.error(err);
+      return internalServerError(JSON.stringify(err.stack), corsHeaders);
+    }
+  });
+  const routes = [addCardRail, homepageRoute, updateHomepageRoute];
   const listener = createListener(routes, () => notFound());
   const server = createServer(listener);
   server.listen(1243, () => console.log(`Listening on http://localhost:${server.address().port}`));
