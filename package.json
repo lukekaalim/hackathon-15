@@ -1,0 +1,22 @@
+{
+  "name": "hackathon-15",
+  "version": "1.0.0",
+  "description": "hackathon-15",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukekaalim/hackathon-15.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukekaalim/hackathon-15/issues"
+  },
+  "homepage": "https://github.com/lukekaalim/hackathon-15#readme",
+  "dependencies": {
+    "lerna": "^3.16.4"
+  }
+}
