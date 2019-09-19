@@ -31,6 +31,7 @@ export type Card = {
 };
 
 export type CardRail = {
+  id: string,
   type: 'card-rail',
   cards: Array<Card>,
   callToAction: CallToAction | null,
@@ -43,6 +44,7 @@ export type Poster = {
 }
 
 export type PosterRail = {
+  id: string,
   type: 'poster-rail',
   posters: Array<Poster>,
   callToAction: CallToAction | null,
@@ -57,6 +59,7 @@ export type LiveEvent = {
 }
 
 export type LiveEventRail = {
+  id: string,
   type: 'live-event-rail',
   events: Array<LiveEvent>,
   callToAction: CallToAction | null,
@@ -71,6 +74,7 @@ const cardModel/*: Model<Card>*/ = modelObject({
   subtitle: stringModel,
 });
 const cardRailModel/*: Model<CardRail>*/ = modelObject({
+  id: stringModel,
   type: modelLiteral('card-rail'),
   cards: modelArray(cardModel),
   callToAction: modelOptional(modelCallToAction),
@@ -81,6 +85,7 @@ const posterModel/*: Model<Poster>*/ = modelObject({
   imageURL: stringModel,
 });
 const posterRailModel/*: Model<PosterRail>*/ = modelObject({
+  id: stringModel,
   type: modelLiteral('poster-rail'),
   posters: modelArray(posterModel),
   callToAction: modelOptional(modelCallToAction),
@@ -93,6 +98,7 @@ const liveEventModel/*: Model<LiveEvent>*/ = modelObject({
   endTime: numberModel,
 });
 const liveEventRailModel/*: Model<LiveEventRail>*/ = modelObject({
+  id: stringModel,
   type: modelLiteral('live-event-rail'),
   events: modelArray(liveEventModel),
   callToAction: modelOptional(modelCallToAction),
