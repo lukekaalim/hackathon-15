@@ -29,19 +29,18 @@ const primitives = {
       height: style['height']
     };
     console.log(source);
-    return <Image style={nativeStyle} source={source}></Image>;
+    return <Image style={nativeStyle} source={{ uri: source }}></Image>;
   },
 };
 
 const { Card, Rail } = createNineNowComponents(primitives);
 
-const client = createClient('http://10.0.43.52:1243', createHTTPClientFromFetch(fetch, Headers))
+const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromFetch(fetch, Headers))
 
 export default function App() {
   const [homepageData, setHomePageData] = useState(null);
   const [fontLoaded, setFontLoaded] = useState(false);
   useEffect(() => {
-    const client = createClient('http://10.0.43.52:1243', createHTTPClientFromFetch(fetch, Headers));
     client.getHomepage()
       .then(homepage => setHomePageData(homepage))
       .catch(error => console.error(error));
