@@ -3,7 +3,7 @@ import React from 'react';
 import * as Font from 'expo-font';
 import { createHTTPClientFromFetch } from '@lukekaalim/http-client';
 import { createClient } from '@9now/client';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { createNineNowComponents } from '@9now/components';
 
 const { useState, useEffect } = React;
@@ -17,6 +17,9 @@ const primitives = {
       marginTop: style['margin-top'],
       marginBottom: style['margin-bottom'],
     };
+    if (style['text-transform'] === 'uppercase') {
+      return <Text style={nativeStyle}>{text.toUpperCase()}</Text>
+    }
     return <Text style={nativeStyle}>{text}</Text>
   },
   Box: ({ style = {}, children }) => {
@@ -54,16 +57,18 @@ export default function App() {
 
   if (fontLoaded && homepage) {
     return (
-      <View style={styles.container}>
-        {homepage.rails.map(rail => {
-          switch (rail.type) {
-            case 'card-rail':
-              return <CardRail key={rail.id} {...rail} />
-            default:
-              return <Text>UnsupportedRail</Text>
-          }
-        })}
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          {homepage.rails.map(rail => {
+            switch (rail.type) {
+              case 'card-rail':
+                return <CardRail key={rail.id} {...rail} />
+              default:
+                return <Text>UnsupportedRail</Text>
+            }
+          })}
+        </View>
+      </ScrollView>
     );
   }
 
@@ -80,5 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(17, 22, 25)',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 60,
+    paddingBottom: 60,
   },
 });
