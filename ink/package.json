@@ -9,8 +9,8 @@
   "author": "luke kaalim",
   "license": "MIT",
   "dependencies": {
-    "@9now/client": "^1.2.0",
-    "@9now/components": "^1.2.0",
+    "@9now/client": "^1.3.0",
+    "@9now/components": "^1.3.0",
     "@lukekaalim/http-client": "^1.2.0",
     "ink": "^2.3.0",
     "ink-box": "^1.0.0",
