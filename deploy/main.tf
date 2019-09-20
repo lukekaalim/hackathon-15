@@ -6,13 +6,21 @@ resource "aws_s3_bucket" "asset_bucket" {
     index_document = "index.html"
   }
 }
+resource "aws_s3_bucket" "web_bucket" {
+  bucket = "sushi.lukekaalim.com"
+  acl    = "public-read"
+
+  website {
+    index_document = "index.html"
+  }
+}
 
 resource "aws_s3_bucket" "app_sources" {
   bucket_prefix = "hackathon-application-versions"
 }
 
 locals {
-  content-types = { png = "image/png", html = "text/html" }
+  content-types = { png = "image/png", html = "text/html", js = "text/javascript", otf = "font/otf", css = "text/css" }
 }
 
 resource "aws_s3_bucket_object" "asset_bucket_objects" {
@@ -26,6 +34,17 @@ resource "aws_s3_bucket_object" "asset_bucket_objects" {
   content_type = "${local.content-types[ element(split(".", each.value), length(split(".", each.value)) - 1) ]}"
 }
 
+resource "aws_s3_bucket_object" "web_bucket_objects" {
+  for_each = "${fileset("${path.module}/../web/public", "**/*.{png,html,js,otf,css}")}"
+  acl = "public-read"
+  bucket = "${aws_s3_bucket.web_bucket.bucket}"
+  key    = "${each.value}"
+  source = "${path.module}/../web/public/${each.value}"
+
+  etag = "${filemd5("${path.module}/../web/public/${each.value}")}"
+  content_type = "${local.content-types[ element(split(".", each.value), length(split(".", each.value)) - 1) ]}"
+}
+
 data "aws_route53_zone" "lukekaalim_zone" {
   name         = "lukekaalim.com."
 }
@@ -36,6 +55,13 @@ resource "aws_route53_record" "asset_domain" {
   type    = "CNAME"
   ttl     = "300"
   records = ["${aws_s3_bucket.asset_bucket.website_endpoint}"]
+}
+resource "aws_route53_record" "web_domain" {
+  zone_id = "${data.aws_route53_zone.lukekaalim_zone.zone_id}"
+  name    = "sushi.${data.aws_route53_zone.lukekaalim_zone.name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${aws_s3_bucket.web_bucket.website_endpoint}"]
 }
 
 
