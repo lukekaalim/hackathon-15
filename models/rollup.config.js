@@ -1,6 +1,7 @@
 const commonjs = require('rollup-plugin-commonjs');
 const resolve = require('rollup-plugin-node-resolve');
 const babel = require('rollup-plugin-babel');
+const flow = require('rollup-plugin-flow-entry');
 
 const path = require('path');
 
@@ -20,5 +21,6 @@ module.exports = {
     babel({ exclude: 'node_modules/**' }),
     resolve(),
     commonjs(),
+    flow(),
   ]
 }
