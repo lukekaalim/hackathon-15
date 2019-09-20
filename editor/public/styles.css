@@ -1,0 +1,30 @@
+@font-face {
+  font-family: Hurme;
+  src: url("fonts/Hurme Geometric Sans No.3/HurmeGeometricSans3.otf") format("opentype");
+}
+
+body {
+  background-color: rgb(17, 22, 25)
+}
+
+.homepage-container {
+  display: block;
+  resize: horizontal;
+  width: 50%;
+}
+
+.editor {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.form {
+  min-width: 400px;
+  resize: horizontal;
+  overflow: scroll;
+  background-color: grey;
+  margin-right: 40px;
+  height: 100%;
+}
