@@ -35,7 +35,7 @@ locals {
 resource "aws_s3_bucket_object" "editor_bucket_objects" {
   for_each = "${fileset("${path.module}/../editor/public", "**/*.{png,html,js,otf,css}")}"
   acl = "public-read"
-  bucket = "${aws_s3_bucket.web_bucket.bucket}"
+  bucket = "${aws_s3_bucket.editor_bucket.bucket}"
   key    = "${each.value}"
   source = "${path.module}/../editor/public/${each.value}"
 
