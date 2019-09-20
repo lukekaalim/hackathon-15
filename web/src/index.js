@@ -10,7 +10,7 @@ import { Homepage } from './components/Homepage';
 const NineNowWeb = () => {
   const [homepageData, setHomePageData] = useState(null);
   useEffect(() => {
-    const client = createClient('http://localhost:1243', createHTTPClientFromFetch(fetch, Headers));
+    const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromFetch(fetch, Headers));
     client.getHomepage()
       .then(homepage => setHomePageData(homepage))
       .catch(error => console.error(error));

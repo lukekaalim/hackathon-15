@@ -24,20 +24,20 @@ const primitives = {
 const { Card, CardRail } = createNineNowComponents(primitives);
 
 const InkNow = () => {
-	const [rails, setRails] = useState();
+	const [rails, setRails] = useState(null);
 	const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromNodeHttpsRequest(request));
 	useEffect(() => {
 		client.getHomepage().then(({ rails }) => setRails(rails)).catch(console.error);
-	}, [])
+	}, []);
+	
 	if (!rails) {
 		return 'Loading';
 	}
-	if (rails.length < 1) {
-		return 'No Content';
-	}
-	if (rails[0].type !== 'card-rail')
-		return 'Unsupported Rail';
-	return <CardRail callToAction={rails[0].callToAction} cards={rails[0].cards} />
+	return rails.map(rail => {
+		if (rail.type !== 'card-rail')
+			return 'Not supported';
+		return <CardRail key={rail.id} {...rail} />
+	});
 };
 
 render(React.createElement(InkNow));

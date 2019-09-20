@@ -8,8 +8,8 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@9now/client": "^0.7.0",
-    "@9now/components": "^0.14.1",
+    "@9now/client": "^1.2.0",
+    "@9now/components": "^1.2.0",
     "@lukekaalim/http-client": "^1.2.0",
     "expo": "^34.0.1",
     "expo-font": "^6.0.1",

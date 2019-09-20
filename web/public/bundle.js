@@ -389,108 +389,604 @@ var model = {
   modelLiteral: modelLiteral$1,
   modelOptional: modelOptional$1,
 };
+var model_2 = model.numberModel;
+var model_3 = model.stringModel;
+var model_6 = model.modelObject;
+var model_7 = model.modelArray;
+var model_8 = model.modelDisjointUnion;
+var model_10 = model.modelLiteral;
+var model_11 = model.modelOptional;
 
 // @flow strict
-const {
-  modelObject: modelObject$2,
-  stringModel: stringModel$3,
-  nameModel: nameModel$2,
-  modelArray: modelArray$2,
-  modelDisjointUnion: modelDisjointUnion$2,
-  modelLiteral: modelLiteral$2,
-  modelOptional: modelOptional$2,
-} = model;
 /*::
-import type { Model } from '@lukekaalim/model';
+type UserID = string;
+type VideoProgress = {
+  userId: UserID,
+  videoId: VideoID,
+  progress: number,
+};
+*/
 
-export type Route =
-  | { type: 'home' };
+var videoProgressModel
+/*: Model<VideoProgress>*/
+= model_6({
+  userId: model_3,
+  videoId: model_3,
+  progress: model_2
+});
 
+// @flow strict
+/*::
 export type CallToAction = {
-  title: string,
-  route: Route,
-};
+  label: string,
+}
+*/
 
-export type Carousel = {
-  slides: Array<{ imageURL: string }>,
-};
-
+var modelCallToAction = model_6({
+  label: model_3
+});
+/*::
+export type CardID = string;
 export type Card = {
+  id: string,
   imageURL: string,
-  route: Route,
   title: string,
   subtitle: string,
 };
 
-export type Rail = {
-  callToAction: CallToAction | null,
+export type CardRailID = string;
+export type CardRail = {
+  id: CardRailID,
+  type: 'card-rail',
   cards: Array<Card>,
-};
+  callToAction: CallToAction | null,
+  title: string,
+}
 
-export type Homepage = {
-  carousel: Carousel,
-  rails: Array<Rail>
+export type PosterID = string;
+export type Poster = {
+  id: string,
+  imageURL: string,
+}
+
+export type PosterRailID = string;
+export type PosterRail = {
+  id: PosterRailID,
+  type: 'poster-rail',
+  posters: Array<Poster>,
+  callToAction: CallToAction | null,
+  title: string,
+}
+
+export type LiveEventID = string;
+export type LiveEvent = {
+  id: LiveEventID,
+  imageURL: string,
+  startTime: number,
+  endTime: number,
+}
+export type LiveEventRailID = string;
+export type LiveEventRail = {
+  id: LiveEventRailID,
+  type: 'live-event-rail',
+  events: Array<LiveEvent>,
+  callToAction: CallToAction | null,
+  title: string,
+}
+
+export type Rail = CardRail | PosterRail | LiveEventRail;
+*/
+
+var cardModel
+/*: Model<Card>*/
+= model_6({
+  id: model_3,
+  imageURL: model_3,
+  title: model_3,
+  subtitle: model_3
+});
+var cardRailModel
+/*: Model<CardRail>*/
+= model_6({
+  id: model_3,
+  type: model_10('card-rail'),
+  cards: model_7(cardModel),
+  callToAction: model_11(modelCallToAction),
+  title: model_3
+});
+var posterModel
+/*: Model<Poster>*/
+= model_6({
+  id: model_3,
+  imageURL: model_3
+});
+var posterRailModel
+/*: Model<PosterRail>*/
+= model_6({
+  id: model_3,
+  type: model_10('poster-rail'),
+  posters: model_7(posterModel),
+  callToAction: model_11(modelCallToAction),
+  title: model_3
+});
+var liveEventModel
+/*: Model<LiveEvent>*/
+= model_6({
+  id: model_3,
+  imageURL: model_3,
+  startTime: model_2,
+  endTime: model_2
+});
+var liveEventRailModel
+/*: Model<LiveEventRail>*/
+= model_6({
+  id: model_3,
+  type: model_10('live-event-rail'),
+  events: model_7(liveEventModel),
+  callToAction: model_11(modelCallToAction),
+  title: model_3
+});
+var railModel
+/*: Model<Rail>*/
+= model_8('type', {
+  'live-event-rail': liveEventRailModel,
+  'poster-rail': posterRailModel,
+  'card-rail': cardRailModel
+});
+
+// @flow strict
+/*::
+export type TvEpisodeID = string;
+export type TvEpisode = {
+  id: TvEpisodeID,
+  title: string,
 };
 */
 
-const routeModel/*: Model<Route>*/ = nameModel$2('9Now/Route', modelDisjointUnion$2('type', {
-  'home': modelObject$2({ type: modelLiteral$2('home') }),
-}));
+var episodeModel
+/*: Model<TvEpisode>*/
+= model_6({
+  id: model_3,
+  title: model_3
+});
+/*::
+export type TvSeasonID = string;
+export type TvSeason = {
+  id: TvSeasonID,
+  title: string,
+  episodes: Array<TvEpisodeID>,
+};
+*/
 
-const callToActionModel/*: Model<CallToAction>*/ = nameModel$2('9Now/CallToAction', modelObject$2({
-  title: stringModel$3,
-  route: routeModel,
-}));
+var seasonModel
+/*: Model<TvSeason>*/
+= model_6({
+  id: model_3,
+  title: model_3,
+  episodes: model_7(model_3)
+});
+/*::
+export type TvSeriesID = string;
+export type TvSeries = {
+  id: TvSeriesID,
+  title: string,
+  seasons: Array<TvSeasonID>,
+};
+*/
 
-const carouselModel/*: Model<Carousel>*/ = nameModel$2('9Now/Carousel', modelObject$2({
-  slides: modelArray$2(modelObject$2({
-    imageURL: stringModel$3,
-    route: routeModel,
-  })),
-}));
+var seriesModel
+/*: Model<TvSeries>*/
+= model_6({
+  id: model_3,
+  title: model_3,
+  seasons: model_7(model_3)
+});
 
-const cardModel/*: Model<Card>*/ = nameModel$2('9Now/Card', modelObject$2({
-  imageURL: stringModel$3,
-  route: routeModel,
-  title: stringModel$3,
-  subtitle: stringModel$3,
-}));
+// @flow strict
+/*::
+export type VideoID = string;
+export type Video = {
+  id: VideoID,
+  videoURL: string,
+  thumbnailURL: string,
+  title: string,
+};
+*/
 
-const railModel/*: Model<Rail>*/ = nameModel$2('9Now/Rail', modelObject$2({
-  callToAction: modelOptional$2(callToActionModel),
-  cards: modelArray$2(cardModel),
-}));
+var videoModel
+/*: Model<Video>*/
+= model_6({
+  id: model_3,
+  videoURL: model_3,
+  thumbnailURL: model_3,
+  title: model_3
+});
 
-const homepageModel/*: Model<Homepage>*/ = nameModel$2('9Now/Homepage', modelObject$2({
-  carousel: carouselModel,
-  rails: modelArray$2(railModel),
-}));
+var models_esm = /*#__PURE__*/Object.freeze({
+  cardModel: cardModel,
+  cardRailModel: cardRailModel,
+  episodeModel: episodeModel,
+  liveEventModel: liveEventModel,
+  liveEventRailModel: liveEventRailModel,
+  posterModel: posterModel,
+  posterRailModel: posterRailModel,
+  railModel: railModel,
+  seasonModel: seasonModel,
+  seriesModel: seriesModel,
+  videoModel: videoModel,
+  videoProgressModel: videoProgressModel
+});
 
-var src = {
-  homepageModel,
-  railModel,
-  carouselModel,
-  callToActionModel,
-  routeModel,
+/*
+  Result is a data type that represents a single branch in execution,
+  where one branch performs the expected operation, and another handles
+  a case where something unexpected happened.
+  This is slightly more useful to use because it forces the developer to
+  handle the error cases before accessing the value.
+*/
+
+const succeed$6 = (success) => ({
+  type: 'success',
+  success,
+});
+const fail$7 = (failure) => ({
+  type: 'failure',
+  failure,
+});
+
+// Simple handler function: if the result is successful, goto the second argument, it fails, goto the third
+const handle$1 = (
+  result,
+  onSuccess,
+  onFailure,
+) => {
+  if (result.type === 'success') {
+    return onSuccess(result.success);
+  } else {
+    return onFailure(result.failure);
+  }
+};
+
+const chain$2 = (result) => ({
+  then: (resolve) => handle$1(result,
+    success => chain$2(resolve(success)),
+    () => chain$2(result)
+  ),
+  catch: (reject) => handle$1(result,
+    () => chain$2(result),
+    (failure) => chain$2(reject(failure))
+  ),
+  result: () => result,
+  handle: () => handle$1(result, x => x, y => y),
+});
+
+var result$1 = {
+  succeed: succeed$6,
+  fail: fail$7,
+  handle: handle$1,
+  chain: chain$2,
+};
+
+/*::
+export type CastFailure = {
+  type: 'cast-failure',
+  message: string,
+  cause?: InternalFailure | CastFailure,
+}
+
+export type InternalFailure = {
+  type: 'internal-failure',
+  message: string,
+  error: Error,
+}
+
+export type ModelFailure =
+  | InternalFailure
+  | CastFailure
+*/
+
+const castFailure$7 = (message/*: string*/, cause/*:: ?: ModelFailure*/)/*: CastFailure*/ => ({
+  type: 'cast-failure',
+  message,
+  cause,
+});
+
+const internalFailure$1 = (error/*: Error*/)/*: InternalFailure*/ => ({
+  type: 'internal-failure',
+  message: error.stack,
+  error,
+});
+
+var failures$1 = {
+  castFailure: castFailure$7,
+  internalFailure: internalFailure$1,
 };
 
 // @flow strict
 /*::
-import type { Homepage } from '@9now/models';
+import type { Model } from './model';
+import type { Result } from '@lukekaalim/result';
+import type { CastFailure, InternalFailure } from './failures';
+*/
+const { succeed: succeed$7, fail: fail$8 } = result$1;
+const { castFailure: castFailure$8 } = failures$1;
+
+const stringModel$3/*: Model<string>*/ = {
+  from: value => typeof value === 'string' ?
+    succeed$7(value) :
+    fail$8(castFailure$8(`Value is not a string (Is ${typeof value} instead)`)),
+};
+
+const numberModel$2/*: Model<number>*/ = {
+  from: value => typeof value === 'number' ?
+    succeed$7(value) :
+    fail$8(castFailure$8(`Value is not a number (Is ${typeof value} instead)`)),
+};
+
+const booleanModel$2/*: Model<boolean>*/ = {
+  from: value => typeof value === 'boolean' ?
+    succeed$7(value) :
+    fail$8(castFailure$8(`Value is not a boolean (Is ${typeof value} instead)`)),
+};
+
+var primitives$1 = {
+  stringModel: stringModel$3,
+  numberModel: numberModel$2,
+  booleanModel: booleanModel$2,
+};
+
+// @flow strict
+/*::
+import type { Model } from './model';
+*/
+const { fail: fail$9, succeed: succeed$8 } = result$1;
+const { castFailure: castFailure$9 } = failures$1;
+
+const modelObject$2 = /*::  <Map: {}>*/(
+  map/*: Map*/,
+)/*: Model<$ObjMap<Map, <V, Y>(model: Model<V>) => V>>*/ => {
+  const mapEntries/*: Array<[string, Model<mixed>]>*/ = [];
+  for (const key of Object.keys(map)) {
+    mapEntries.push([key, map[key]]);
+  }
+  const from = value => {
+    if (typeof value !== 'object' || value === null) {
+      return fail$9(castFailure$9('WAA'));
+    }
+    const model = {};
+    for (const [name, subModel] of mapEntries) {
+      const propertyValueResult = subModel.from(value[name]);
+      if (propertyValueResult.type === 'failure') {
+        return fail$9(castFailure$9('WAA'));
+      }
+      model[name] = propertyValueResult.success;
+    }
+    return succeed$8(model);
+  };
+  return { from };
+};
+
+const modelArray$2 = /*::  <Element>*/(
+  elementModel/*: Model<Element>*/
+)/*: Model<Array<Element>> */ => {
+  const from = value => {
+    if (!Array.isArray(value)) {
+      return fail$9(castFailure$9('WAA'));
+    }
+    const model = [];
+    for (const elementValue of value) {
+      const elementResult = elementModel.from(elementValue);
+      if (elementResult.type === 'failure') {
+        return fail$9(castFailure$9('WAA'));
+      }
+      model.push(elementResult.success);
+    }
+    return succeed$8(model);
+  };
+  return { from };
+};
+
+const modelTuple$2 = /*:: <TupleModel>*/(
+  tupleModels/*: TupleModel*/
+)/*: Model<$TupleMap<TupleModel, <V>(model: Model<V>) => V>>*/ => {
+  // $FlowFixMe
+  const models/*: Array<Model<mixed>>*/ = tupleModels;
+  const from = value => {
+    if (!Array.isArray(value)) {
+      return fail$9(castFailure$9('WAA'));
+    }
+    const tuple = [];
+    for (let i = 0; i < models.length; i++) {
+      const tupleResult = models[i].from(value[i]);
+      if (tupleResult.type === 'failure')
+        return fail$9(castFailure$9('WAA'));
+      tuple[i] = tupleResult.success;
+    }
+    return succeed$8(tuple);
+  };
+  // $FlowFixMe
+  return { from };
+};
+
+var composite$1 = {
+  modelObject: modelObject$2,
+  modelArray: modelArray$2,
+  modelTuple: modelTuple$2,
+};
+
+// @flow strict
+/*::
+import type { Model } from './model';
+*/
+const { chain: chain$3, fail: fail$a } = result$1;
+const { castFailure: castFailure$a } = failures$1;
+
+const nameModel$2 = /*:: <T>*/(name/*: string*/, model/*: Model<T>*/)/*: Model<T>*/ => ({
+  name,
+  from: (value) => chain$3(model.from(value))
+    .catch(failure => fail$a(castFailure$a(`Failed to cast ${name}.`, failure)))
+    .result(),
+});
+
+var name$1 = {
+  nameModel: nameModel$2,
+};
+
+// @flow strict
+/*::
+import type { Model } from './model';
+*/
+const { succeed: succeed$9, fail: fail$b } = result$1;
+const { castFailure: castFailure$b } = failures$1;
+const { stringModel: stringModel$4 } = primitives$1;
+
+const modelDisjointUnion$2 = /*::<Map: {}>*/(
+  tagName/*: string*/,
+  map/*: Map*/,
+)/*: Model<$Values<$ObjMap<Map, <V>(model: Model<V>) => V>>>*/ => {
+  const tags = Object.keys(map);
+  const from = (value) => {
+    if (typeof value !== 'object') {
+      return fail$b(castFailure$b(''));
+    }
+    if (value === null) {
+      return fail$b(castFailure$b(''));
+    }
+    const tag = value[tagName];
+    if (typeof tag !== 'string') {
+      return fail$b(castFailure$b(''));
+    }
+    if (!tags.includes(tag)) {
+      return fail$b(castFailure$b(''));
+    }
+    return map[tag].from(value);
+  };
+  return { from };
+};
+
+const modelTagUnion$2 = /*::<Union>*/(
+  tags/*: Array<Union>*/,
+)/*: Model<Union>*/ => {
+  const from = (value) => {
+    const tagResult = stringModel$4.from(value);
+    if (tagResult.type === 'failure') {
+      return fail$b(castFailure$b(''));
+    }
+    const tag = tags.find(tag => tag === tagResult.success);
+    if (!tag) {
+      return fail$b(castFailure$b(''));
+    }
+    return succeed$9(tag);
+  };
+  return { from };
+};
+
+var unions$1 = {
+  modelDisjointUnion: modelDisjointUnion$2,
+  modelTagUnion: modelTagUnion$2,
+};
+
+// @flow strict
+/*::
+import type { Model } from './model';
+import type { Result } from '@lukekaalim/result';
+import type { CastFailure, InternalFailure } from './failures';
+*/
+const { succeed: succeed$a, fail: fail$c } = result$1;
+const { castFailure: castFailure$c } = failures$1;
+
+const modelLiteral$2 = /*:: <T>*/(literal/*: T*/)/*: Model<T>*/ => {
+  const from = (mixed) => {
+    if (mixed === literal) {
+      return succeed$a(literal);
+    }
+    return fail$c(castFailure$c(''));
+  };
+
+  return { from };
+};
+
+var literal$1 = {
+  modelLiteral: modelLiteral$2,
+};
+
+// @flow strict
+/*::
+import type { Model } from './model';
+import type { Result } from '@lukekaalim/result';
+import type { ModelFailure } from './failures';
+*/
+const { fail: fail$d, succeed: succeed$b } = result$1;
+const { castFailure: castFailure$d } = failures$1;
+
+const modelOptional$2 = /*:: <T> */(
+  model/*: Model<T>*/
+)/*: Model<T | null>*/ => {
+  const from = (value)/*: Result<T | null, ModelFailure>*/ => {
+    if (value === null || value === undefined)
+      return succeed$b(null);
+    const modelResult = model.from(value);
+    if (modelResult.type === 'failure')
+      return fail$d(castFailure$d(''));
+    return succeed$b(modelResult.success);
+  };
+
+  return { from };
+};
+
+var optional$1 = {
+  modelOptional: modelOptional$2,
+};
+
+const { stringModel: stringModel$5, numberModel: numberModel$3, booleanModel: booleanModel$3 } = primitives$1;
+const { modelObject: modelObject$3, modelArray: modelArray$3, modelTuple: modelTuple$3 } = composite$1;
+const { nameModel: nameModel$3 } = name$1;
+const { modelDisjointUnion: modelDisjointUnion$3, modelTagUnion: modelTagUnion$3 } = unions$1;
+const { modelLiteral: modelLiteral$3 } = literal$1;
+const { modelOptional: modelOptional$3 } = optional$1;
+
+/*::
+export type Model<T> = {
+  from: mixed => Result<T, ModelFailure>,
+};
+*/
+
+var model$1 = {
+  booleanModel: booleanModel$3,
+  numberModel: numberModel$3,
+  stringModel: stringModel$5,
+  nameModel: nameModel$3,
+  modelTuple: modelTuple$3,
+  modelObject: modelObject$3,
+  modelArray: modelArray$3,
+  modelDisjointUnion: modelDisjointUnion$3,
+  modelTagUnion: modelTagUnion$3,
+  modelLiteral: modelLiteral$3,
+  modelOptional: modelOptional$3,
+};
+
+// @flow strict
+/*::
+import type { Rail } from '@9now/models';
 import type { Result } from '@lukekaalim/result';
 import type { HTTPClient } from '@lukekaalim/http-client';
 
 type Client = {
-  getHomepage: () => Promise<Homepage>,
+  getHomepage: () => Promise<{ rails: Array<Rail> }>,
 };
 */
-const { homepageModel: homepageModel$1 } = src;
+const { railModel: railModel$1 } = models_esm;
+const { modelArray: modelArray$4, modelObject: modelObject$4 } = model$1;
 
 const trySuccess = /*:: <S, F>*/(result/*: Result<S, F>*/)/*: S*/ => {
   if (result.type === 'failure')
     throw new Error(result.failure);
   return result.success;
 };
+
+const homepageResponseModel = modelObject$4({
+  rails: modelArray$4(railModel$1),
+});
 
 const createClient = (
   host/*: string*/,
@@ -500,7 +996,7 @@ const createClient = (
     const response = trySuccess(await client.request(new URL('/home', host).href));
     if (response.status !== 200)
       throw new Error(response.body);
-    const homepage = trySuccess(homepageModel$1.from(JSON.parse(response.body)));
+    const homepage = trySuccess(homepageResponseModel.from(JSON.parse(response.body)));
     return homepage;
   };
   return {
@@ -508,10 +1004,10 @@ const createClient = (
   };
 };
 
-var src$1 = {
+var src = {
   createClient,
 };
-var src_1 = src$1.createClient;
+var src_1 = src.createClient;
 
 var n,u,t$1,i,r$1,o,f={},e$1=[],c=/acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|^--/i;function s(n,l){for(var u in l)n[u]=l[u];return n}function a(n){var l=n.parentNode;l&&l.removeChild(n);}function h(n,l,u){var t,i,r,o,f=arguments;if(l=s({},l),arguments.length>3)for(u=[u],t=3;t<arguments.length;t++)u.push(f[t]);if(null!=u&&(l.children=u),null!=n&&null!=n.defaultProps)for(i in n.defaultProps)void 0===l[i]&&(l[i]=n.defaultProps[i]);return o=l.key,null!=(r=l.ref)&&delete l.ref,null!=o&&delete l.key,v(n,l,o,r)}function v(l,u,t,i){var r={type:l,props:u,key:t,ref:i,__k:null,__p:null,__b:0,__e:null,l:null,__c:null,constructor:void 0};return n.vnode&&n.vnode(r),r}function y(n){return n.children}function d(n){if(null==n||"boolean"==typeof n)return null;if("string"==typeof n||"number"==typeof n)return v(null,n,null,null);if(null!=n.__e||null!=n.__c){var l=v(n.type,n.props,n.key,null);return l.__e=n.__e,l}return n}function m(n,l){this.props=n,this.context=l;}function w(n,l){if(null==l)return n.__p?w(n.__p,n.__p.__k.indexOf(n)+1):null;for(var u;l<n.__k.length;l++)if(null!=(u=n.__k[l])&&null!=u.__e)return u.__e;return "function"==typeof n.type?w(n):null}function g(n){var l,u;if(null!=(n=n.__p)&&null!=n.__c){for(n.__e=n.__c.base=null,l=0;l<n.__k.length;l++)if(null!=(u=n.__k[l])&&null!=u.__e){n.__e=n.__c.base=u.__e;break}return g(n)}}function k(l){(!l.__d&&(l.__d=!0)&&1===u.push(l)||i!==n.debounceRendering)&&(i=n.debounceRendering,(n.debounceRendering||t$1)(_));}function _(){var n;for(u.sort(function(n,l){return l.__v.__b-n.__v.__b});n=u.pop();)n.__d&&n.forceUpdate(!1);}function b(n,l,u,t,i,r,o,c,s){var h,v,p,y,d,m,g,k=u&&u.__k||e$1,_=k.length;if(c==f&&(c=null!=r?r[0]:_?w(u,0):null),h=0,l.__k=x(l.__k,function(u){if(null!=u){if(u.__p=l,u.__b=l.__b+1,null===(p=k[h])||p&&u.key==p.key&&u.type===p.type)k[h]=void 0;else for(v=0;v<_;v++){if((p=k[v])&&u.key==p.key&&u.type===p.type){k[v]=void 0;break}p=null;}if(y=$(n,u,p=p||f,t,i,r,o,null,c,s),(v=u.ref)&&p.ref!=v&&(g||(g=[])).push(v,u.__c||y,u),null!=y){if(null==m&&(m=y),null!=u.l)y=u.l,u.l=null;else if(r==p||y!=c||null==y.parentNode){n:if(null==c||c.parentNode!==n)n.appendChild(y);else{for(d=c,v=0;(d=d.nextSibling)&&v<_;v+=2)if(d==y)break n;n.insertBefore(y,c);}"option"==l.type&&(n.value="");}c=y.nextSibling,"function"==typeof l.type&&(l.l=y);}}return h++,u}),l.__e=m,null!=r&&"function"!=typeof l.type)for(h=r.length;h--;)null!=r[h]&&a(r[h]);for(h=_;h--;)null!=k[h]&&D(k[h],k[h]);if(g)for(h=0;h<g.length;h++)A(g[h],g[++h],g[++h]);}function x(n,l,u){if(null==u&&(u=[]),null==n||"boolean"==typeof n)l&&u.push(l(null));else if(Array.isArray(n))for(var t=0;t<n.length;t++)x(n[t],l,u);else u.push(l?l(d(n)):n);return u}function C(n,l,u,t,i){var r;for(r in u)r in l||N(n,r,null,u[r],t);for(r in l)i&&"function"!=typeof l[r]||"value"===r||"checked"===r||u[r]===l[r]||N(n,r,l[r],u[r],t);}function P(n,l,u){"-"===l[0]?n.setProperty(l,u):n[l]="number"==typeof u&&!1===c.test(l)?u+"px":u||"";}function N(n,l,u,t,i){var r,o,f,e,c;if("key"===(l=i?"className"===l?"class":l:"class"===l?"className":l)||"children"===l);else if("style"===l)if(r=n.style,"string"==typeof u)r.cssText=u;else{if("string"==typeof t&&(r.cssText="",t=null),t)for(o in t)u&&o in u||P(r,o,"");if(u)for(f in u)t&&u[f]===t[f]||P(r,f,u[f]);}else"o"===l[0]&&"n"===l[1]?(e=l!==(l=l.replace(/Capture$/,"")),c=l.toLowerCase(),l=(c in n?c:l).slice(2),u?(t||n.addEventListener(l,T,e),(n.u||(n.u={}))[l]=u):n.removeEventListener(l,T,e)):"list"!==l&&"tagName"!==l&&"form"!==l&&!i&&l in n?n[l]=null==u?"":u:"function"!=typeof u&&"dangerouslySetInnerHTML"!==l&&(l!==(l=l.replace(/^xlink:?/,""))?null==u||!1===u?n.removeAttributeNS("http://www.w3.org/1999/xlink",l.toLowerCase()):n.setAttributeNS("http://www.w3.org/1999/xlink",l.toLowerCase(),u):null==u||!1===u?n.removeAttribute(l):n.setAttribute(l,u));}function T(l){return this.u[l.type](n.event?n.event(l):l)}function $(l,u,t,i,r,o,f,e,c,a){var h,v,p,d,w,g,k,_,x,C,P=u.type;if(void 0!==u.constructor)return null;(h=n.__b)&&h(u);try{n:if("function"==typeof P){if(_=u.props,x=(h=P.contextType)&&i[h.__c],C=h?x?x.props.value:h.__p:i,t.__c?k=(v=u.__c=t.__c).__p=v.__E:("prototype"in P&&P.prototype.render?u.__c=v=new P(_,C):(u.__c=v=new m(_,C),v.constructor=P,v.render=H),x&&x.sub(v),v.props=_,v.state||(v.state={}),v.context=C,v.__n=i,p=v.__d=!0,v.__h=[]),null==v.__s&&(v.__s=v.state),null!=P.getDerivedStateFromProps&&s(v.__s==v.state?v.__s=s({},v.__s):v.__s,P.getDerivedStateFromProps(_,v.__s)),p)null==P.getDerivedStateFromProps&&null!=v.componentWillMount&&v.componentWillMount(),null!=v.componentDidMount&&f.push(v);else{if(null==P.getDerivedStateFromProps&&null==e&&null!=v.componentWillReceiveProps&&v.componentWillReceiveProps(_,C),!e&&null!=v.shouldComponentUpdate&&!1===v.shouldComponentUpdate(_,v.__s,C)){for(v.props=_,v.state=v.__s,v.__d=!1,v.__v=u,u.__e=null!=c?c!==t.__e?c:t.__e:null,u.__k=t.__k,h=0;h<u.__k.length;h++)u.__k[h]&&(u.__k[h].__p=u);break n}null!=v.componentWillUpdate&&v.componentWillUpdate(_,v.__s,C);}for(d=v.props,w=v.state,v.context=C,v.props=_,v.state=v.__s,(h=n.__r)&&h(u),v.__d=!1,v.__v=u,v.__P=l,h=v.render(v.props,v.state,v.context),u.__k=null!=h&&h.type==y&&null==h.key?h.props.children:h,null!=v.getChildContext&&(i=s(s({},i),v.getChildContext())),p||null==v.getSnapshotBeforeUpdate||(g=v.getSnapshotBeforeUpdate(d,w)),b(l,u,t,i,r,o,f,c,a),v.base=u.__e;h=v.__h.pop();)v.__s&&(v.state=v.__s),h.call(v);p||null==d||null==v.componentDidUpdate||v.componentDidUpdate(d,w,g),k&&(v.__E=v.__p=null);}else u.__e=z(t.__e,u,t,i,r,o,f,a);(h=n.diffed)&&h(u);}catch(l){n.__e(l,u,t);}return u.__e}function j(l,u){for(var t;t=l.pop();)try{t.componentDidMount();}catch(l){n.__e(l,t.__v);}n.__c&&n.__c(u);}function z(n,l,u,t,i,r,o,c){var s,a,h,v,p=u.props,y=l.props;if(i="svg"===l.type||i,null==n&&null!=r)for(s=0;s<r.length;s++)if(null!=(a=r[s])&&(null===l.type?3===a.nodeType:a.localName===l.type)){n=a,r[s]=null;break}if(null==n){if(null===l.type)return document.createTextNode(y);n=i?document.createElementNS("http://www.w3.org/2000/svg",l.type):document.createElement(l.type),r=null;}return null===l.type?p!==y&&(null!=r&&(r[r.indexOf(n)]=null),n.data=y):l!==u&&(null!=r&&(r=e$1.slice.call(n.childNodes)),h=(p=u.props||f).dangerouslySetInnerHTML,v=y.dangerouslySetInnerHTML,c||(v||h)&&(v&&h&&v.__html==h.__html||(n.innerHTML=v&&v.__html||"")),C(n,y,p,i,c),l.__k=l.props.children,v||b(n,l,u,t,"foreignObject"!==l.type&&i,r,o,f,c),c||("value"in y&&void 0!==y.value&&y.value!==n.value&&(n.value=null==y.value?"":y.value),"checked"in y&&void 0!==y.checked&&y.checked!==n.checked&&(n.checked=y.checked))),n}function A(l,u,t){try{"function"==typeof l?l(u):l.current=u;}catch(l){n.__e(l,t);}}function D(l,u,t){var i,r,o;if(n.unmount&&n.unmount(l),(i=l.ref)&&A(i,null,u),t||"function"==typeof l.type||(t=null!=(r=l.__e)),l.__e=l.l=null,null!=(i=l.__c)){if(i.componentWillUnmount)try{i.componentWillUnmount();}catch(l){n.__e(l,u);}i.base=i.__P=null;}if(i=l.__k)for(o=0;o<i.length;o++)i[o]&&D(i[o],u,t);null!=r&&a(r);}function H(n,l,u){return this.constructor(n,u)}function I(l,u,t){var i,o,c;n.__p&&n.__p(l,u),o=(i=t===r$1)?null:t&&t.__k||u.__k,l=h(y,null,[l]),c=[],$(u,i?u.__k=l:(t||u).__k=l,o||f,f,void 0!==u.ownerSVGElement,t&&!i?[t]:o?null:e$1.slice.call(u.childNodes),c,!1,t||f,i),j(c,l);}n={},m.prototype.setState=function(n,l){var u=this.__s!==this.state&&this.__s||(this.__s=s({},this.state));("function"!=typeof n||(n=n(u,this.props)))&&s(u,n),null!=n&&this.__v&&(l&&this.__h.push(l),k(this));},m.prototype.forceUpdate=function(n){var l,u,t,i=this.__v,r=this.__v.__e,o=this.__P;o&&(l=!1!==n,u=[],t=$(o,i,s({},i),this.__n,void 0!==o.ownerSVGElement,null,u,l,null==r?w(i):r),j(u,i),t!=r&&g(i)),n&&n();},m.prototype.render=y,u=[],t$1="function"==typeof Promise?Promise.prototype.then.bind(Promise.resolve()):setTimeout,i=n.debounceRendering,n.__e=function(n,l,u){for(var t;l=l.__p;)if((t=l.__c)&&!t.__p)try{if(t.constructor&&null!=t.constructor.getDerivedStateFromError)t.setState(t.constructor.getDerivedStateFromError(n));else{if(null==t.componentDidCatch)continue;t.componentDidCatch(n);}return k(t.__E=t)}catch(l){n=l;}throw n},r$1=f,o=0;
 
@@ -590,15 +1086,18 @@ function _objectSpread2(target) {
 
 var middleCardStyle = {
   'margin-left': 4,
-  'margin-right': 4
+  'margin-right': 4,
+  'flex-direction': 'column'
 };
 var firstCardStyle = {
   'margin-left': 0,
-  'margin-right': 4
+  'margin-right': 4,
+  'flex-direction': 'column'
 };
 var lastCardStyle = {
   'margin-left': 4,
-  'margin-right': 0
+  'margin-right': 0,
+  'flex-direction': 'column'
 };
 var cardTitleStyle = {
   'color': 'white',
@@ -652,10 +1151,10 @@ var createCard = function createCard(_ref) {
       source: imageURL
     }), preact.createElement(Text, {
       style: cardTitleStyle,
-      text: "The Block"
+      text: title
     }), preact.createElement(Text, {
       style: cartSubtitleStyle,
-      text: "Episode 28"
+      text: subtitle
     }));
   };
 };
@@ -672,26 +1171,34 @@ var railCardContainerStyle = {
   'display': 'flex',
   'flex-direction': 'row'
 };
+var railStyle = {
+  'flex-direction': 'column'
+};
 
-var createRail = function createRail(_ref3, Card) {
+var createCardRail = function createCardRail(_ref3, Card) {
   var Box = _ref3.Box,
       Text = _ref3.Text,
       Image = _ref3.Image;
   return function (_ref4
-  /*: RailProps*/
+  /*: CardRailData*/
   ) {
-    var cards = _ref4.cards;
-    return preact.createElement(Box, null, preact.createElement(Text, {
+    var title = _ref4.title,
+        cards = _ref4.cards;
+    return preact.createElement(Box, {
+      style: railStyle
+    }, preact.createElement(Text, {
       style: railTitleStyle,
-      text: "Recently Added"
+      text: title
     }), preact.createElement(Box, {
       style: railCardContainerStyle
-    }, cards.map(function (card) {
+    }, cards.map(function (card, index) {
       return preact.createElement(Card, {
+        key: card.id,
+        id: card.id,
         subtitle: card.subtitle,
         title: card.title,
         imageURL: card.imageURL,
-        route: card.route
+        position: index === 0 ? 'first' : index === cards.length - 1 ? 'last' : 'middle'
       });
     })));
   };
@@ -699,10 +1206,10 @@ var createRail = function createRail(_ref3, Card) {
 
 var createRailComponents = function createRailComponents(primitives) {
   var Card = createCard(primitives);
-  var Rail = createRail(primitives, Card);
+  var CardRail = createCardRail(primitives, Card);
   return {
     Card: Card,
-    Rail: Rail
+    CardRail: CardRail
   };
 };
 
@@ -712,7 +1219,7 @@ var createNineNowComponents = function createNineNowComponents(primitives
   return _objectSpread2({}, createRailComponents(primitives));
 };
 
-var primitives$1 = {
+var primitives$2 = {
   Text: function Text(props) {
     return h("p", {
       style: props.style
@@ -731,9 +1238,9 @@ var primitives$1 = {
   }
 };
 
-var _createNineNowCompone = createNineNowComponents(primitives$1),
+var _createNineNowCompone = createNineNowComponents(primitives$2),
     Card = _createNineNowCompone.Card,
-    Rail = _createNineNowCompone.Rail;
+    CardRail = _createNineNowCompone.CardRail;
 
 var Homepage = function Homepage(_ref) {
   var children = _ref.children;
@@ -749,7 +1256,7 @@ var NineNowWeb = function NineNowWeb() {
       setHomePageData = _useState2[1];
 
   v$1(function () {
-    var client = src_1('http://localhost:1243', t(fetch, Headers));
+    var client = src_1('http://api.sushi.lukekaalim.com', t(fetch, Headers));
     client.getHomepage().then(function (homepage) {
       return setHomePageData(homepage);
     })["catch"](function (error) {
@@ -760,10 +1267,8 @@ var NineNowWeb = function NineNowWeb() {
   if (homepageData) {
     var rails = homepageData.rails;
     return h(Homepage, null, rails.map(function (rail) {
-      return h(Rail, {
-        cards: rail.cards,
-        callToAction: rail.callToAction
-      });
+      if (rail.type !== 'card-rail') return 'Unsupported Rail';
+      return h(CardRail, rail);
     }));
   }
 
