@@ -2,7 +2,7 @@
 /*::
 import type { Model } from '@lukekaalim/model';
 */
-const {
+import {
   stringModel,
   numberModel,
   modelObject,
@@ -10,7 +10,7 @@ const {
   modelLiteral,
   modelArray,
   modelOptional,
-} = require('@lukekaalim/model');
+} from '@lukekaalim/model';
 
 /*::
 export type CallToAction = {
@@ -72,13 +72,13 @@ export type LiveEventRail = {
 
 export type Rail = CardRail | PosterRail | LiveEventRail;
 */
-const cardModel/*: Model<Card>*/ = modelObject({
+export const cardModel/*: Model<Card>*/ = modelObject({
   id: stringModel,
   imageURL: stringModel,
   title: stringModel,
   subtitle: stringModel,
 });
-const cardRailModel/*: Model<CardRail>*/ = modelObject({
+export const cardRailModel/*: Model<CardRail>*/ = modelObject({
   id: stringModel,
   type: modelLiteral('card-rail'),
   cards: modelArray(cardModel),
@@ -86,11 +86,11 @@ const cardRailModel/*: Model<CardRail>*/ = modelObject({
   title: stringModel,
 })
 
-const posterModel/*: Model<Poster>*/ = modelObject({
+export const posterModel/*: Model<Poster>*/ = modelObject({
   id: stringModel,
   imageURL: stringModel,
 });
-const posterRailModel/*: Model<PosterRail>*/ = modelObject({
+export const posterRailModel/*: Model<PosterRail>*/ = modelObject({
   id: stringModel,
   type: modelLiteral('poster-rail'),
   posters: modelArray(posterModel),
@@ -98,13 +98,13 @@ const posterRailModel/*: Model<PosterRail>*/ = modelObject({
   title: stringModel,
 })
 
-const liveEventModel/*: Model<LiveEvent>*/ = modelObject({
+export const liveEventModel/*: Model<LiveEvent>*/ = modelObject({
   id: stringModel,
   imageURL: stringModel,
   startTime: numberModel,
   endTime: numberModel,
 });
-const liveEventRailModel/*: Model<LiveEventRail>*/ = modelObject({
+export const liveEventRailModel/*: Model<LiveEventRail>*/ = modelObject({
   id: stringModel,
   type: modelLiteral('live-event-rail'),
   events: modelArray(liveEventModel),
@@ -112,20 +112,8 @@ const liveEventRailModel/*: Model<LiveEventRail>*/ = modelObject({
   title: stringModel,
 });
 
-const railModel/*: Model<Rail>*/ = modelDisjointUnion('type', {
+export const railModel/*: Model<Rail>*/ = modelDisjointUnion('type', {
   'live-event-rail': liveEventRailModel,
   'poster-rail': posterRailModel,
   'card-rail': cardRailModel,
 });
-
-module.exports = {
-  railModel,
-  // rails
-  liveEventRailModel,
-  posterRailModel,
-  cardRailModel,
-  // rail items
-  liveEventModel,
-  posterModel,
-  cardModel,
-};

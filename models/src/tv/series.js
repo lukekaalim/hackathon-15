@@ -2,11 +2,11 @@
 /*::
 import type { Model } from '@lukekaalim/model';
 */
-const {
+import {
   modelObject,
   stringModel,
   modelArray,
-} = require('@lukekaalim/model');
+} from '@lukekaalim/model';
 
 /*::
 export type TvEpisodeID = string;
@@ -15,7 +15,7 @@ export type TvEpisode = {
   title: string,
 };
 */
-const episodeModel/*: Model<TvEpisode>*/ = modelObject({
+export const episodeModel/*: Model<TvEpisode>*/ = modelObject({
   id: stringModel,
   title: stringModel,
 });
@@ -29,7 +29,7 @@ export type TvSeason = {
 };
 */
 
-const seasonModel/*: Model<TvSeason>*/ = modelObject({
+export const seasonModel/*: Model<TvSeason>*/ = modelObject({
   id: stringModel,
   title: stringModel,
   episodes: modelArray(stringModel),
@@ -44,13 +44,8 @@ export type TvSeries = {
 };
 */
 
-const seriesModel/*: Model<TvSeries>*/ = modelObject({
+export const seriesModel/*: Model<TvSeries>*/ = modelObject({
   id: stringModel,
   title: stringModel,
   seasons: modelArray(stringModel),
 });
-
-module.exports = {
-  seriesModel,
-  seasonModel,
-}

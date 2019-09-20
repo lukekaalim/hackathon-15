@@ -5,7 +5,7 @@ const babel = require('rollup-plugin-babel');
 const path = require('path');
 
 module.exports = {
-  input: 'src/models',
+  input: 'src/models.js',
   output: [
     {
       file: 'dist/models.esm.js',

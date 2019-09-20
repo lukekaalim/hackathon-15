@@ -3,12 +3,12 @@
 import type { VideoID } from '../tv/video';
 import type { Model } from '@lukekaalim/model';
 */
-const {
+import {
   modelObject,
   stringModel,
   modelArray,
   numberModel,
-} = require('@lukekaalim/model');
+} from '@lukekaalim/model';
 
 /*::
 type UserID = string;
@@ -19,12 +19,8 @@ type VideoProgress = {
 };
 */
 
-const videoProgressModel/*: Model<VideoProgress>*/ = modelObject({
+export const videoProgressModel/*: Model<VideoProgress>*/ = modelObject({
   userId: stringModel,
   videoId: stringModel,
   progress: numberModel,
 });
-
-module.exports = {
-  videoProgressModel,
-};

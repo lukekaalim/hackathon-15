@@ -2,15 +2,11 @@
 /*::
 export type * from './user/progress';
 export type * from './tv/rail';
-export type * from './tv/route';
 export type * from './tv/series';
 export type * from './tv/video';
 */
 
-module.exports = {
-  ...require('./user/progress'),
-  ...require('./tv/rail'),
-  ...require('./tv/route'),
-  ...require('./tv/series'),
-  ...require('./tv/video'),
-};
+export * from './user/progress';
+export * from './tv/rail';
+export * from './tv/series';
+export * from './tv/video';

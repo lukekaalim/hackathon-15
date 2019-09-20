@@ -2,10 +2,10 @@
 /*::
 import type { Model } from '@lukekaalim/model';
 */
-const {
+import {
   modelObject,
   stringModel,
-} = require('@lukekaalim/model');
+} from '@lukekaalim/model';
 
 /*::
 export type VideoID = string;
@@ -17,13 +17,9 @@ export type Video = {
 };
 */
 
-const videoModel/*: Model<Video>*/ = modelObject({
+export const videoModel/*: Model<Video>*/ = modelObject({
   id: stringModel,
   videoURL: stringModel,
   thumbnailURL: stringModel,
   title: stringModel,
 });
-
-module.exports = {
-  videoModel,
-}
