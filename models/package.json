@@ -2,13 +2,24 @@
   "name": "@9now/models",
   "version": "1.0.0",
   "description": "",
-  "main": "src/models.js",
+  "main": "dist/models.cjs.js",
+  "module": "dist/models.esm.js",
   "scripts": {
-    "test": "node test"
+    "test": "node test",
+    "prepublishOnly": "make"
   },
   "author": "luke kaalim",
   "license": "MIT",
   "dependencies": {
     "@lukekaalim/model": "^2.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "rollup": "^1.21.4",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-flow-entry": "^0.3.1",
+    "rollup-plugin-node-resolve": "^5.2.0"
   }
 }
