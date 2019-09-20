@@ -23,17 +23,21 @@ const primitives = {
 
 const { Card, CardRail } = createNineNowComponents(primitives);
 
+
+const useHomepage = (client) => {
+  const [homepageData, setHomePageData] = useState(null);
+  useEffect(() => client.addHomepageListener(homepage => setHomePageData(homepage)), [client]);
+  return homepageData;
+};
+const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromNodeHttpsRequest(request));
+
 const InkNow = () => {
-	const [rails, setRails] = useState(null);
-	const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromNodeHttpsRequest(request));
-	useEffect(() => {
-		client.getHomepage().then(({ rails }) => setRails(rails)).catch(console.error);
-	}, []);
+	const homepage = useHomepage(client);
 	
-	if (!rails) {
+	if (!homepage) {
 		return 'Loading';
 	}
-	return rails.map(rail => {
+	return homepage.rails.map(rail => {
 		if (rail.type !== 'card-rail')
 			return 'Not supported';
 		return <CardRail key={rail.id} {...rail} />

@@ -39,22 +39,23 @@ const { Card, CardRail } = createNineNowComponents(primitives);
 
 const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromFetch(fetch, Headers))
 
-export default function App() {
+const useHomepage = (client) => {
   const [homepageData, setHomePageData] = useState(null);
+  useEffect(() => client.addHomepageListener(homepage => setHomePageData(homepage)), [client]);
+  return homepageData;
+};
+
+export default function App() {
+  const homepage = useHomepage(client);
   const [fontLoaded, setFontLoaded] = useState(false);
-  useEffect(() => {
-    client.getHomepage()
-      .then(homepage => setHomePageData(homepage))
-      .catch(error => console.error(error));
-  }, []);
   useEffect(() => {
     Font.loadAsync({ hurme: require('./assets/fonts/Hurme.otf') }).then(() => setFontLoaded(true))
   }, []);
 
-  if (fontLoaded && homepageData) {
+  if (fontLoaded && homepage) {
     return (
       <View style={styles.container}>
-        {homepageData.rails.map(rail => {
+        {homepage.rails.map(rail => {
           switch (rail.type) {
             case 'card-rail':
               return <CardRail key={rail.id} {...rail} />

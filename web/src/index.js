@@ -7,17 +7,18 @@ import { useState, useEffect } from 'preact/hooks';
 import { CardRail } from './components/NineNow';
 import { Homepage } from './components/Homepage';
 
-const NineNowWeb = () => {
+const useHomepage = (client) => {
   const [homepageData, setHomePageData] = useState(null);
-  useEffect(() => {
-    const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromFetch(fetch, Headers));
-    client.getHomepage()
-      .then(homepage => setHomePageData(homepage))
-      .catch(error => console.error(error));
-  }, []);
+  useEffect(() => client.addHomepageListener(homepage => setHomePageData(homepage)), [client]);
+  return homepageData;
+};
+
+const client = createClient('http://api.sushi.lukekaalim.com', createHTTPClientFromFetch(fetch, Headers));
+const NineNowWeb = () => {
+  const homepage = useHomepage(client);
   
-  if (homepageData) {
-    const { rails } = homepageData;
+  if (homepage) {
+    const { rails } = homepage;
     return (
       <Homepage>
         {rails.map(rail => {
